@@ -42,4 +42,4 @@ return a single line starting `BLOCKER:` with the specific question. Don't guess
 - **Verification:** commands run + results
 - **Risks / follow-ups:** ≤3 bullets, or a `BLOCKER:` line
 
-Keep it under ~40 lines.
+Keep it under ~50 lines; if compression forces a tradeoff, keep the *why* and risks over the file-by-file list.

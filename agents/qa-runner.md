@@ -32,5 +32,6 @@ Rules:
 - **Result:** PASS / FAIL / PARTIAL
 - **Matrix:** each check → pass/fail + one-line evidence (path or output snippet)
 - **Failures:** what failed, with the exact error
+- **Flakiness:** any test that failed then passed on re-run (with retry count), or "none"
 
 Keep it under 40 lines. Do not dump full logs — cite paths.

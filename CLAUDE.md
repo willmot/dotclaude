@@ -24,14 +24,12 @@ agency. Match each repo's own conventions; the rules below are cross-project.
 Two coding subagents in `~/.claude/agents/` execute below the frontier lead.
 Capability-tier names, so model upgrades never force renames:
 
-- **`jnr-code-engineer`** (Sonnet) — fully-specified mechanical work: pre-approved
-  plans, renames, schema fields, tests-from-pattern, mechanical translations. Every
-  decision must already be named.
-- **`snr-code-engineer`** (Opus, high effort) — semi-defined work where the approach
-  is visible but not fully specified: debugging with a clear surface, style-sensitive
-  refactors, consolidations needing judgment among existing patterns.
+- **`jnr-code-engineer`** (Sonnet) — fully-specified mechanical work.
+- **`snr-code-engineer`** (Opus, high effort) — semi-defined work needing judgment, or
+  a large/messy diff. (Each agent's full scope lives in its own definition.)
 
-**Default to delegating coding execution** — including small, unplanned tasks. The
+**Delegate execution when it keeps real scope or noise out of the lead's context** — a
+multi-file change, a large/messy diff, or work that needs its own investigation. The
 lead scopes, decides, and reviews. Route by what's *missing* from the task:
 
 - Nothing missing (decisions named) **and** small, clean blast radius → **jnr**
@@ -44,8 +42,9 @@ lead scopes, decides, and reviews. Route by what's *missing* from the task:
   upgrade) → **ask me first**
 - Choosing the approach IS the work (exploration, open-ended debugging, design,
   architecture, security-sensitive) → **stay on the lead**
-- Trivial (≤ ~2 small edits in files already in context) → **stay inline**; spawn
-  overhead exceeds the saving
+- Small and self-contained (a handful of edits in files already in context) → **stay
+  inline** — the spawn plus the agent's return report (re-read every later turn) costs
+  more than just doing it
 
 When either agent returns a `BLOCKER:` line, answer the question and re-spawn with
 the decision included. If I asked for a review, run the `/code-review` skill against
@@ -94,12 +93,8 @@ and delegate execution for **context hygiene**, not tier savings.
 
 ## Context-cost discipline (long sessions)
 
-- **Batch shell work into few chunky scripts**, not many small turns — each turn
-  re-reads the full session as cache, so turn count (not command count) drives cost.
-- **Cap subagent return contracts.** Give research/exploration spawns an explicit
-  max length and structure; a verbose report lands in my context and is cache-re-read
-  every turn after.
-- **Delegate investigation to the `Explore` agent** so file-reading noise never
-  touches the lead's context.
-- `/clear` between unrelated tasks. After two failed corrections on the same issue,
-  `/clear` and restart with a sharper prompt rather than piling on.
+- Batch shell work into few chunky scripts — turn count (not command count) drives
+  cost, since each turn re-reads the session as cache.
+- Give research/exploration spawns (e.g. the `Explore` agent) an explicit max length
+  and structure — a verbose report re-loads into my context every later turn.
+- `/clear` between unrelated tasks, and after two failed corrections rather than piling on.
